@@ -21,6 +21,7 @@ Indentation defaults to 2 spaces. To use a different number of spaces, use the `
 
 config file `chars_per_indent_4.rb`:
 <pre>
+# This could also be set in your Rakefile
 PuppetLint.configuration.chars_per_indent = 4
 </pre>
 

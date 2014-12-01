@@ -1,4 +1,5 @@
-class (
+# passing manifest 1
+class 1 (
   $arg1 = 1,
   $arg2 =
     2,
@@ -35,7 +36,7 @@ class (
 
     'jkl':
       ensure  => 'file'
-      content => $osfamily ? {
+      content => $::osfamily ? {
         'RedHat' => 'jkl',
         default  => 'jklol',
       };

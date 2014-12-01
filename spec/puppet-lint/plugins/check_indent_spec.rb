@@ -3,20 +3,7 @@ require 'spec_helper'
 describe 'indent' do
   context 'with fix disabled' do
     context 'and correct indent' do
-      let(:code) {
-        <<-EOF.gsub(/^ {10}/, '')
-          class (
-          ) {
-            file { 'this':
-              ensure  => 'present',
-              require => [
-                'abc',
-                'def',
-              ],
-            }
-          }
-        EOF
-      }
+      let(:args) { 'spec/fixtures/pass/1.pp' }
 
       it 'should detect no problems' do
         expect(problems).to have(0).problems

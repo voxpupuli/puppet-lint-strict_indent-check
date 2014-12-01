@@ -27,7 +27,7 @@ PuppetLint.new_check(:'indent') do
   end
 
   def check
-    chars_per_indent = 2
+    chars_per_indent = PuppetLint.configuration.chars_per_indent || 2
     indent = 0
     colon_indent = nil
 

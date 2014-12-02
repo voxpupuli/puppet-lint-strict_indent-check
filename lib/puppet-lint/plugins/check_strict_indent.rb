@@ -1,7 +1,7 @@
 # Public: Check the manifest tokens for correct indent levels and
 # record a warning for each instance found.
 
-PuppetLint.new_check(:'indent') do
+PuppetLint.new_check(:'strict_indent') do
   def match(tokens)
     open = {
       :LBRACE => [],

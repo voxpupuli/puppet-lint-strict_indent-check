@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
-  spec.name        = 'puppet-lint-indent-check'
-  spec.version     = '1.1.0'
-  spec.homepage    = 'https://github.com/relud/puppet-lint-indent-check'
+  spec.name        = 'puppet-lint-strict_indent-check'
+  spec.version     = '2.0.0'
+  spec.homepage    = 'https://github.com/relud/puppet-lint-strict_indent-check'
   spec.license     = 'Mozilla 2.0'
   spec.author      = 'Daniel Thornton'
   spec.email       = 'daniel@relud.com'
@@ -12,9 +12,9 @@ Gem::Specification.new do |spec|
     'spec/**/*',
   ]
   spec.test_files  = Dir['spec/**/*']
-  spec.summary     = 'puppet-lint indent check'
+  spec.summary     = 'puppet-lint strict indent check'
   spec.description = <<-EOF
-    Extends puppet-lint to ensure that you manifests have good indentation.
+    Extends puppet-lint to ensure that your manifests follow a strict indentation pattern.
   EOF
 
   spec.add_dependency             'puppet-lint', '~> 1.0'

@@ -1,7 +1,8 @@
 require 'spec_helper'
 
-describe 'indent' do
+describe 'strict_indent' do
   before do
+    # disable all other checks
     PuppetLint.configuration.checks.reject{ |check|
       check == :indent
     }.each do |check|
@@ -10,6 +11,7 @@ describe 'indent' do
   end
 
   after do
+    # re-enable other checks
     PuppetLint.configuration.checks.reject{ |check|
       check == :indent
     }.each do |check|

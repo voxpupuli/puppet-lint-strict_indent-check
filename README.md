@@ -40,6 +40,6 @@ Acceptable Identation
 * indent should decrease by one step the line of the end of a resource due to right curly brace, if it was indented for resource title, and not ended by a semicolon.
 * indent should increase by one step the line after an equals `=` or farrow `=>` that ends a line, but only for that one line.
 
-see `spec/fixtures/pass/` for good indentation examples
+see `spec/fixtures/pass/` for good indentation examples.
 
-see `spec/fixtures/fail/` for bad indentation examples
+see `spec/fixtures/fail/` for bad indentation examples.

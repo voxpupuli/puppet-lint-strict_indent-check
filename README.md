@@ -41,4 +41,5 @@ Acceptable Identation
 * indent should increase by one step the line after an equals `=` or farrow `=>` that ends a line, but only for that one line.
 
 see `spec/fixtures/pass/` for good indentation examples
+
 see `spec/fixtures/fail/` for bad indentation examples

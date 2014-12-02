@@ -15,7 +15,7 @@ PuppetLint.new_check(:'strict_indent') do
       if [:LBRACE, :LBRACK, :LPAREN].include?(token.type)
         open[token.type] << token
       elsif [:RBRACE, :RBRACK, :RPAREN].include?(token.type)
-        match = open[("L" + token.type[1..-1]).to_sym].pop
+        match = open[("L" + token.type.to_s[1..-1]).to_sym].pop
         if not match.nil?
           matches[token] = match
           matches[match] = token

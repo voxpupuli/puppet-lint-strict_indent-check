@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-strict_indent-check'
-  spec.version     = '2.0.0'
+  spec.version     = '2.0.1'
   spec.homepage    = 'https://github.com/relud/puppet-lint-strict_indent-check'
   spec.license     = 'Mozilla 2.0'
   spec.author      = 'Daniel Thornton'

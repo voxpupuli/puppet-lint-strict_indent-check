@@ -145,10 +145,13 @@ PuppetLint.new_check(:'strict_indent') do
 
   def fix(problem)
     char_for_indent = ' '
-    if problem[:token].next_token.type == :INDENT
+    if [:INDENT,:WHITESPACE].include?(problem[:token].next_token.type)
       problem[:token].next_token.value = char_for_indent * problem[:indent]
     else
-      problem[:token].next_token.value = char_for_indent * problem[:indent] + problem[:token].next_token.value
+      tokens.insert(
+        tokens.find_index(problem[:token]) + 1,
+        PuppetLint::Lexer::Token.new(:INDENT, char_for_indent * problem[:indent], problem[:line], problem[:column]),
+      )
     end
   end
 end

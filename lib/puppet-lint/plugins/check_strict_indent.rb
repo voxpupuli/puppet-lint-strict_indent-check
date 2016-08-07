@@ -150,7 +150,7 @@ PuppetLint.new_check(:'strict_indent') do
     else
       tokens.insert(
         tokens.find_index(problem[:token]) + 1,
-        PuppetLint::Lexer::Token.new(:INDENT, char_for_indent * problem[:indent], problem[:line], problem[:column]),
+        PuppetLint::Lexer::Token.new(:INDENT, char_for_indent * problem[:indent], problem[:line], problem[:column])
       )
     end
   end

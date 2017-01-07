@@ -57,7 +57,7 @@ PuppetLint.new_check(:'strict_indent') do
 
       # reset prev_token to last non-whitespace token on previous line
       prev_token = token.prev_token
-      while not prev_token.nil? and prev_token.type == :WHITESPACE
+      while not prev_token.nil? and (prev_token.type == :WHITESPACE or prev_token.type == :COMMENT)
         prev_token = prev_token.prev_token
       end
 

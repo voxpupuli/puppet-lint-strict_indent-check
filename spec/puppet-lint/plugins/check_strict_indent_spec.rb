@@ -41,6 +41,24 @@ describe 'strict_indent' do
     end
   end
 
+  context 'comment after resource title.' do
+    let(:code) {
+      <<-EOF.gsub(/^ {8}/, '')
+        class (
+        ) {
+          file {
+            'this': #comment
+              ensure  => 'present',
+          }
+        }
+      EOF
+    }
+
+    it 'should detect 0 problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
   context 'invalid array indent' do
     let(:code) {
       <<-EOF.gsub(/^ {8}/, '')

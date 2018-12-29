@@ -3,19 +3,27 @@
 
 PuppetLint.new_check(:'strict_indent') do
   def match(tokens)
+    opening_token = {
+      :RBRACE => :LBRACE,
+      :RBRACK => :LBRACK,
+      :RPAREN => :LPAREN,
+      :HEREDOC => :HEREDOC_OPEN,
+      :HEREDOC_POST => :HEREDOC_OPEN,
+    }
     open = {
       :LBRACE => [],
       :LBRACK => [],
       :LPAREN => [],
+      :HEREDOC_OPEN => [],
     }
 
     matches = {}
 
     tokens.each do |token|
-      if [:LBRACE, :LBRACK, :LPAREN].include?(token.type)
+      if [:LBRACE, :LBRACK, :LPAREN, :HEREDOC_OPEN].include?(token.type)
         open[token.type] << token
-      elsif [:RBRACE, :RBRACK, :RPAREN].include?(token.type)
-        match = open[("L" + token.type.to_s[1..-1]).to_sym].pop
+      elsif [:RBRACE, :RBRACK, :RPAREN, :HEREDOC, :HEREDOC_POST].include?(token.type)
+        match = open[opening_token[token.type]].pop
         if not match.nil?
           matches[token] = match
           matches[match] = token
@@ -45,6 +53,9 @@ PuppetLint.new_check(:'strict_indent') do
       open_groups = 0
       prev_token = token.prev_token
       while not prev_token.nil? and prev_token.type != :NEWLINE
+        if prev_token.type == :HEREDOC_OPEN
+          temp_indent += 1
+        end
         if [:LBRACE, :LBRACK, :LPAREN].include?(prev_token.type)
           if matches[prev_token].nil? or matches[prev_token].line > prev_token.line
             # left braces not matched in the same line increase indent
@@ -120,6 +131,10 @@ PuppetLint.new_check(:'strict_indent') do
       actual = 0
       if token.next_token.type == :INDENT
         actual = token.next_token.value.length
+      elsif token.prev_token.type == :HEREDOC
+        actual = token.prev_token.value.split("\n").last.length
+      elsif token.prev_token.type == :HEREDOC_OPEN
+        actual = next_token.prev_token.value.split("\n").last.length
       else
         actual = 0
       end

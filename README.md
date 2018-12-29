@@ -1,6 +1,8 @@
 Installation
 ===
 
+[![Build Status](https://travis-ci.org/relud/puppet-lint-strict_indent-check.svg?branch=master)](https://travis-ci.org/relud/puppet-lint-strict_indent-check)
+
 <pre>
 gem install puppet-lint-strict_indent-check
 </pre>

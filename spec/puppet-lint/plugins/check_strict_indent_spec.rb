@@ -77,4 +77,17 @@ describe 'strict_indent' do
       expect(problems).to have(1).problems
     end
   end
+
+  context 'blank line at beginning of file' do
+    let(:code) {
+      <<-EOF.gsub(/^ {8}/, '')
+
+        class () {}
+      EOF
+    }
+
+    it 'should detect 0 problems' do
+      expect(problems).to have(0).problems
+    end
+  end
 end

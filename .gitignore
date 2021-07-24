@@ -1,6 +1,5 @@
 /.bundle/
-/vendor/
+/vendor/gems/
 /Gemfile.lock
-puppet-lint-strict_indent-check-*.gem
-*.swp
-*.swo
+vendor/bundle
+.vendor/

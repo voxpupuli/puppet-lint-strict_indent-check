@@ -29,12 +29,7 @@ file { 'file':
         \@mynetworks => 'MYNETS',
     );
     $policy_bank{'MYNETS'} = {
-        originating => 1,
-        final_virus_destiny => D_REJECT,
-        final_spam_destiny => D_REJECT,
-        final_bad_header_destiny => D_PASS,
-        terminate_dsn_on_notify_success => 0,
-        warnbadhsender => 1,
+        originating => 1
     };
     | FILE
   ;

@@ -52,4 +52,12 @@ class 1 (
         'stuff'
       );
   }
+
+  $groups = if $arg1 { ['wheel'] } else { [] }
+
+  $nested_groups = if $arg1 {
+      ['wheel']
+    } else {
+      []
+    }
 }

@@ -19,9 +19,11 @@ jobs:
           - ruby: "2.6"
           - ruby: "2.7"
           - ruby: "3.0"
+          - ruby: "3.1"
             coverage: "yes"
     env:
       COVERAGE: ${{ matrix.coverage }}
+    name: Ruby ${{ matrix.ruby }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Ruby ${{ matrix.ruby }}

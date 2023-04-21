@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0](https://github.com/voxpupuli/puppet-lint-strict_indent-check/tree/3.0.0) (2023-04-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-strict_indent-check/compare/2.1.0...3.0.0)
+
+**Breaking changes:**
+
+- Drop Ruby \< 2.7; Add RuboCop [\#34](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/34) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [2.1.0](https://github.com/voxpupuli/puppet-lint-strict_indent-check/tree/2.1.0) (2022-11-29)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-strict_indent-check/compare/2.0.8...2.1.0)

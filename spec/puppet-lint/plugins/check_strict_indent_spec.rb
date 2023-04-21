@@ -3,18 +3,18 @@ require 'spec_helper'
 describe 'strict_indent' do
   before do
     # disable all other checks
-    PuppetLint.configuration.checks.reject{ |check|
+    PuppetLint.configuration.checks.reject do |check|
       check == :indent
-    }.each do |check|
+    end.each do |check|
       PuppetLint.configuration.send("disable_#{check}")
     end
   end
 
   after do
     # re-enable other checks
-    PuppetLint.configuration.checks.reject{ |check|
+    PuppetLint.configuration.checks.reject do |check|
       check == :indent
-    }.each do |check|
+    end.each do |check|
       PuppetLint.configuration.send("enable_#{check}")
     end
   end
@@ -24,7 +24,7 @@ describe 'strict_indent' do
       context manifest do
         let(:code) { File.read(manifest) }
 
-        it 'should detect no problems' do
+        it 'detects no problems' do
           expect(problems).to have(0).problems
         end
       end
@@ -34,7 +34,7 @@ describe 'strict_indent' do
       context manifest do
         let(:code) { File.read(manifest) }
 
-        it 'should detect problems' do
+        it 'detects problems' do
           expect(problems).to have(1).problems
         end
       end
@@ -42,7 +42,7 @@ describe 'strict_indent' do
   end
 
   context 'comment after resource title.' do
-    let(:code) {
+    let(:code) do
       <<-EOF.gsub(/^ {8}/, '')
         class (
         ) {
@@ -52,15 +52,15 @@ describe 'strict_indent' do
           }
         }
       EOF
-    }
+    end
 
-    it 'should detect 0 problems' do
+    it 'detects 0 problems' do
       expect(problems).to have(0).problems
     end
   end
 
   context 'invalid array indent' do
-    let(:code) {
+    let(:code) do
       <<-EOF.gsub(/^ {8}/, '')
         class (
         ) {
@@ -71,22 +71,22 @@ describe 'strict_indent' do
           }
         }
       EOF
-    }
+    end
 
-    it 'should detect 1 problems' do
+    it 'detects 1 problems' do
       expect(problems).to have(1).problems
     end
   end
 
   context 'blank line at beginning of file' do
-    let(:code) {
+    let(:code) do
       <<-EOF.gsub(/^ {8}/, '')
 
         class () {}
       EOF
-    }
+    end
 
-    it 'should detect 0 problems' do
+    it 'detects 0 problems' do
       expect(problems).to have(0).problems
     end
   end

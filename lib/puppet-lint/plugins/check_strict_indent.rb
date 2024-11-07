@@ -9,20 +9,24 @@ PuppetLint.new_check(:strict_indent) do
       RPAREN: :LPAREN,
       HEREDOC: :HEREDOC_OPEN,
       HEREDOC_POST: :HEREDOC_OPEN,
+      RCOLLECT: :LCOLLECT,
+      RRCOLLECT: :LLCOLLECT,
     }
     open = {
       LBRACE: [],
       LBRACK: [],
       LPAREN: [],
       HEREDOC_OPEN: [],
+      LCOLLECT: [],
+      LLCOLLECT: [],
     }
 
     matches = {}
 
     tokens.each do |token|
-      if %i[LBRACE LBRACK LPAREN HEREDOC_OPEN].include?(token.type)
+      if %i[LBRACE LBRACK LPAREN HEREDOC_OPEN LCOLLECT LLCOLLECT].include?(token.type)
         open[token.type] << token
-      elsif %i[RBRACE RBRACK RPAREN HEREDOC HEREDOC_POST].include?(token.type)
+      elsif %i[RBRACE RBRACK RPAREN HEREDOC HEREDOC_POST RCOLLECT RRCOLLECT].include?(token.type)
         match = open[opening_token[token.type]].pop
         unless match.nil?
           matches[token] = match
@@ -54,7 +58,7 @@ PuppetLint.new_check(:strict_indent) do
       prev_token = token.prev_token
       while !prev_token.nil? and prev_token.type != :NEWLINE
         temp_indent += 1 if prev_token.type == :HEREDOC_OPEN
-        if %i[LBRACE LBRACK
+        if %i[LBRACE LBRACK LCOLLECT LLCOLLECT
               LPAREN].include?(prev_token.type) && (matches[prev_token].nil? or matches[prev_token].line > prev_token.line)
           # left braces not matched in the same line increase indent
           open_groups += 1
@@ -97,7 +101,7 @@ PuppetLint.new_check(:strict_indent) do
       # unindent for closing brackets in the current line
       next_token = token.next_token
       while !next_token.nil? and next_token.type != :NEWLINE
-        if %i[RBRACE RBRACK RPAREN].include?(next_token.type)
+        if %i[RBRACE RBRACK RPAREN RCOLLECT RRCOLLECT].include?(next_token.type)
           if !matches[next_token].nil? and matches[next_token].line < next_token.line
             # right braces matched in a previous line decrease indent
             indent -= 1

@@ -6,7 +6,7 @@ describe 'strict_indent' do
     PuppetLint.configuration.checks.reject do |check|
       check == :indent
     end.each do |check|
-      PuppetLint.configuration.send("disable_#{check}")
+      PuppetLint.configuration.send(:"disable_#{check}")
     end
   end
 
@@ -15,7 +15,7 @@ describe 'strict_indent' do
     PuppetLint.configuration.checks.reject do |check|
       check == :indent
     end.each do |check|
-      PuppetLint.configuration.send("enable_#{check}")
+      PuppetLint.configuration.send(:"enable_#{check}")
     end
   end
 

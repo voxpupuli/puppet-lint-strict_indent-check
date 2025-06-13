@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rspec/collection_matchers'
+
 begin
   require 'simplecov'
   require 'simplecov-console'

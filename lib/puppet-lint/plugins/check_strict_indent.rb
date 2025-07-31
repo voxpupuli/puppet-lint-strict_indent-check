@@ -49,15 +49,20 @@ PuppetLint.new_check(:strict_indent) do
     end.each do |token|
       temp_indent = 0
 
+      matched_open_lines = []
       # indent for open groups in the previous line
       open_groups = 0
       prev_token = token.prev_token
       while !prev_token.nil? and prev_token.type != :NEWLINE
         temp_indent += 1 if prev_token.type == :HEREDOC_OPEN
-        if %i[LBRACE LBRACK
-              LPAREN].include?(prev_token.type) && (matches[prev_token].nil? or matches[prev_token].line > prev_token.line)
-          # left braces not matched in the same line increase indent
-          open_groups += 1
+        if %i[LBRACE LBRACK LPAREN].include?(prev_token.type)
+          if matches[prev_token].nil?
+            open_groups += 1
+          elsif matches[prev_token].line > prev_token.line and !matched_open_lines.include?(matches[prev_token].line)
+            # increase indent for left braces not matched in the same line or in a line we have already matched a brace to
+            open_groups += 1
+            matched_open_lines << matches[prev_token].line
+          end
         end
         prev_token = prev_token.prev_token
       end
@@ -96,11 +101,15 @@ PuppetLint.new_check(:strict_indent) do
 
       # unindent for closing brackets in the current line
       next_token = token.next_token
+      matched_close_lines = []
       while !next_token.nil? and next_token.type != :NEWLINE
         if %i[RBRACE RBRACK RPAREN].include?(next_token.type)
-          if !matches[next_token].nil? and matches[next_token].line < next_token.line
-            # right braces matched in a previous line decrease indent
+          if !matches[next_token].nil? and
+             matches[next_token].line < next_token.line and
+             !matched_close_lines.include?(matches[next_token].line)
+            # right braces matched in a previous line decrease indent unless we already matched a brace in the same line
             indent -= 1
+            matched_close_lines << matches[next_token].line
           end
           if next_token.type == :RBRACE and !colon_indent.nil? && (!matches[next_token].nil? and matches[next_token].line < colon_indent)
             # unindent at the end of resources if needed

@@ -7,22 +7,19 @@ PuppetLint.new_check(:strict_indent) do
       RBRACE: :LBRACE,
       RBRACK: :LBRACK,
       RPAREN: :LPAREN,
-      HEREDOC: :HEREDOC_OPEN,
-      HEREDOC_POST: :HEREDOC_OPEN,
     }
     open = {
       LBRACE: [],
       LBRACK: [],
       LPAREN: [],
-      HEREDOC_OPEN: [],
     }
 
     matches = {}
 
     tokens.each do |token|
-      if %i[LBRACE LBRACK LPAREN HEREDOC_OPEN].include?(token.type)
+      if %i[LBRACE LBRACK LPAREN].include?(token.type)
         open[token.type] << token
-      elsif %i[RBRACE RBRACK RPAREN HEREDOC HEREDOC_POST].include?(token.type)
+      elsif %i[RBRACE RBRACK RPAREN].include?(token.type)
         match = open[opening_token[token.type]].pop
         unless match.nil?
           matches[token] = match
@@ -138,13 +135,31 @@ PuppetLint.new_check(:strict_indent) do
       end
 
       # get actual indent
-      actual = 0
-      actual = if token.next_token.type == :INDENT
+      actual = case token.next_token.type
+               when :INDENT
                  token.next_token.value.length
-               elsif !token.prev_token.nil? and token.prev_token.type == :HEREDOC
-                 token.prev_token.value.split("\n").last.length
-               elsif !token.prev_token.nil? and token.prev_token.type == :HEREDOC_OPEN
-                 next_token.prev_token.value.split("\n").last.length
+               when :HEREDOC
+                 # Lines containing heredocs have no indent token as the indent is consumed by the heredoc token.
+                 # However the last line of the token value is the whitespace before the pipe in the termination line.
+                 # We use the length of this to get the indent.
+                 if token.next_token.value.end_with?("\n")
+                   0
+                 else
+                   token.next_token.value.split("\n").last.length
+                 end
+               when :HEREDOC_PRE
+                 # For interpolated heredocs the pipe whitespace is in the HEREDOC_POST token so we need scan forward
+                 # to this and get its length.
+                 next_token = token.next_token
+                 while !next_token.nil? and next_token.type != :NEWLINE and next_token.type != :HEREDOC_POST
+                   next_token = next_token.next_token
+                 end
+                 if next_token.type == :HEREDOC_POST
+                   next_token.value.split("\n").last.length
+                 else
+                   # Should never get here return zero if we do
+                   0
+                 end
                else
                  0
                end
@@ -164,6 +179,7 @@ PuppetLint.new_check(:strict_indent) do
         column: token.next_token.column,
         token: token.next_token,
         indent: expected,
+        actual: actual,
       }
     end
   end
@@ -172,11 +188,50 @@ PuppetLint.new_check(:strict_indent) do
     char_for_indent = ' '
     if %i[INDENT WHITESPACE].include?(problem[:token].type)
       problem[:token].value = char_for_indent * problem[:indent]
+    elsif problem[:token].type == :HEREDOC
+      change = problem[:indent] - problem[:actual]
+      indent_heredoc(problem[:token], change)
+    elsif problem[:token].type == :HEREDOC_PRE
+      change = problem[:indent] - problem[:actual]
+      indent_heredoc(problem[:token], change)
+      next_token = problem[:token].next_token
+      while !next_token.nil? and next_token.type != :HEREDOC_POST
+        indent_heredoc(next_token, change) if next_token.type == :HEREDOC_MID
+        next_token = next_token.next_token
+      end
+      indent_heredoc(next_token, change) if next_token.type == :HEREDOC_POST
     else
       tokens.insert(
         tokens.find_index(problem[:token]),
         PuppetLint::Lexer::Token.new(:INDENT, char_for_indent * problem[:indent], problem[:line], problem[:column]),
       )
+    end
+  end
+
+  def map_heredoc_lines(value, change, skip)
+    char_for_indent = ' '
+    value.split("\n").map! do |line|
+      if skip or line.empty?
+        skip = false
+        line
+      elsif change < 0
+        line[-change..]
+      else
+        (char_for_indent * change) + line
+      end
+    end.join("\n")
+  end
+
+  def indent_heredoc(token, change)
+    case token.type
+    when :HEREDOC
+      token.raw = map_heredoc_lines(token.raw, change, false)
+    when :HEREDOC_PRE
+      token.value = map_heredoc_lines(token.value, change, false)
+    when :HEREDOC_MID
+      token.value = map_heredoc_lines(token.value, change, true)
+    when :HEREDOC_POST
+      token.raw = map_heredoc_lines(token.raw, change, true)
     end
   end
 end

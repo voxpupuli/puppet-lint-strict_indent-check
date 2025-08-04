@@ -116,6 +116,12 @@ PuppetLint.new_check(:strict_indent) do
             indent -= 1
             colon_indent = nil
           end
+        elsif next_token.type == :SEMIC and !colon_indent.nil? and
+              %i[INDENT NEWLINE].include?(next_token.prev_token.type) and
+              (next_token.next_token.nil? or next_token.next_token.type == :NEWLINE)
+          # For a lone semicolon within a block decrement immediately. Use temp_indent because
+          # indent will be decremented in the next line by the prev_token logic above.
+          temp_indent -= 1
         end
         next_token = next_token.next_token
       end

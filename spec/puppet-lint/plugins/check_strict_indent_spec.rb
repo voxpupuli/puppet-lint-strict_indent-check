@@ -163,4 +163,126 @@ describe 'strict_indent' do
       expect(manifest).to eq fixed
     end
   end
+
+  context 'misaligned heredocs' do
+    before do
+      PuppetLint.configuration.fix = true
+    end
+
+    after do
+      PuppetLint.configuration.fix = false
+    end
+
+    let(:code) do
+      <<~EOF
+        $over_indented = @(HERE)
+            This is a heredoc
+            that has been
+
+            indented 4 spaces
+               and has some
+             internal indenting
+            | HERE
+
+        $under_indented = @(HERE)
+        This is a heredoc
+
+        that has no
+        indent
+          and has some
+         internal indenting
+        | HERE
+
+        $over_indented_interpolated = @("HERE")
+            This is a heredoc
+            with a ${variable}
+            that has been
+
+            indented 4 spaces
+               and has some
+             internal indenting
+            and ${another} variable
+            | HERE
+
+        $under_indented_interpolated = @("HERE")
+         This is a heredoc
+         with a ${variable} with trailing text
+         that has been
+
+         indented 1 space
+             and has some
+               internal indenting
+         and ${another} variable
+         | HERE
+      EOF
+    end
+
+    let(:fixed) do
+      <<~EOF
+        $over_indented = @(HERE)
+          This is a heredoc
+          that has been
+
+          indented 4 spaces
+             and has some
+           internal indenting
+          | HERE
+
+        $under_indented = @(HERE)
+          This is a heredoc
+
+          that has no
+          indent
+            and has some
+           internal indenting
+          | HERE
+
+        $over_indented_interpolated = @("HERE")
+          This is a heredoc
+          with a ${variable}
+          that has been
+
+          indented 4 spaces
+             and has some
+           internal indenting
+          and ${another} variable
+          | HERE
+
+        $under_indented_interpolated = @("HERE")
+          This is a heredoc
+          with a ${variable} with trailing text
+          that has been
+
+          indented 1 space
+              and has some
+                internal indenting
+          and ${another} variable
+          | HERE
+      EOF
+    end
+
+    it 'detects four problems' do
+      expect(problems).to have(4).problem
+    end
+
+    it 'fixes the first problem' do
+      expect(problems).to contain_fixed('indent should be 2 chars and is 4').on_line(2).in_column(1)
+    end
+
+    it 'fixes the second problem' do
+      expect(problems).to contain_fixed('indent should be 2 chars and is 0').on_line(11).in_column(1)
+    end
+
+    it 'fixes the third problem' do
+      expect(problems).to contain_fixed('indent should be 2 chars and is 4').on_line(20).in_column(1)
+    end
+
+    it 'fixes the forth problem' do
+      expect(problems).to contain_fixed('indent should be 2 chars and is 1').on_line(31).in_column(1)
+    end
+
+    it 'moves the heredoc' do
+      expect(manifest).to eq fixed
+    end
+  end
 end

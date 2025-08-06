@@ -35,12 +35,15 @@ puppet-lint -l chars_per_indent_4.rb puppet-mysql/manifests/init.pp
 
 ## Acceptable Identation
 
-* indent should increase by one step the line after each opened brace (square, curly, paren)
+* indent should increase by one step the line after each opened brace (square, curly, paren).
 * indent should decrease by one step the line of every closed brace.
+* if multiple pairs of braces are opened and closed on the same two lines the indent should only increase once.
 * indent should increase by one step the line after a resource title, unless it already increased due to a bracket.
 * indent should decrease by one step the line after the end of a resource due to semicolon, if it was indented for resource title.
+* if the semicolon is the only element on the line then the indent decreases on the semicolon line instead of the line after.
 * indent should decrease by one step the line of the end of a resource due to right curly brace, if it was indented for resource title, and not ended by a semicolon.
 * indent should increase by one step the line after an equals `=` or farrow `=>` that ends a line, but only for that one line.
+* heredoc contents should be indented by one step.
 
 see `spec/fixtures/pass/` for good indentation examples.
 

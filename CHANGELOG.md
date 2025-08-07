@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0](https://github.com/voxpupuli/puppet-lint-strict_indent-check/tree/4.0.0) (2025-08-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-strict_indent-check/compare/3.0.0...4.0.0)
+
+**Breaking changes:**
+
+- Match the indent for a single semicolon with the Puppet documentation [\#48](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/48) ([msalway](https://github.com/msalway))
+- Only indent once for doubled brackets [\#44](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/44) ([msalway](https://github.com/msalway))
+
+**Fixed bugs:**
+
+- Refactor heredoc indent calculations [\#47](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/47) ([msalway](https://github.com/msalway))
+
+**Closed issues:**
+
+- Ruby 3.1 test fails due to double start of SimpleCov [\#45](https://github.com/voxpupuli/puppet-lint-strict_indent-check/issues/45)
+- Test workflow fails [\#41](https://github.com/voxpupuli/puppet-lint-strict_indent-check/issues/41)
+- Extra indent requested with two opens on same line. [\#21](https://github.com/voxpupuli/puppet-lint-strict_indent-check/issues/21)
+- Update indent behaviour when semicolon is on a separate line [\#19](https://github.com/voxpupuli/puppet-lint-strict_indent-check/issues/19)
+
+**Merged pull requests:**
+
+- Update README for recent changes [\#49](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/49) ([msalway](https://github.com/msalway))
+- Remove SimpleCov.start as it is done by PuppetLint's spec\_helper [\#46](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/46) ([msalway](https://github.com/msalway))
+- fix rubocop [\#42](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/42) ([paran1](https://github.com/paran1))
+- Update voxpupuli-rubocop requirement from ~\> 1.1 to ~\> 2.0 [\#36](https://github.com/voxpupuli/puppet-lint-strict_indent-check/pull/36) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [3.0.0](https://github.com/voxpupuli/puppet-lint-strict_indent-check/tree/3.0.0) (2023-04-21)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-strict_indent-check/compare/2.1.0...3.0.0)

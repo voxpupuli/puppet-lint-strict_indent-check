@@ -9,3 +9,6 @@ inherit_gem:
 Naming/FileName:
   Exclude:
     - "*.gemspec"
+
+AllCops:
+  TargetRubyVersion: 3.2

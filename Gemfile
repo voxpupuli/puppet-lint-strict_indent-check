@@ -13,6 +13,6 @@ group :development do
   gem 'rake', '~> 13.0', '>= 13.0.6'
   gem 'rspec', '~> 3.12'
   gem 'rspec-collection_matchers', '~> 1.2'
-  gem 'rspec-its', '~> 1.3'
-  gem 'voxpupuli-rubocop', '~> 2.0'
+  gem 'rspec-its', '>= 1.3', '< 3'
+  gem 'voxpupuli-rubocop', '~> 4.2.0'
 end

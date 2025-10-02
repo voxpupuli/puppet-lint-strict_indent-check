@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Public: Check the manifest tokens for correct indent levels and
 # record a warning for each instance found.
 

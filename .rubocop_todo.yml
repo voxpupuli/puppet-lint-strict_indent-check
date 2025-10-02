@@ -54,17 +54,6 @@ Style/EmptyElse:
   Exclude:
     - 'lib/puppet-lint/plugins/check_strict_indent.rb'
 
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - '**/*.arb'
-    - 'lib/puppet-lint/plugins/check_strict_indent.rb'
-    - 'puppet-lint-strict_indent-check.gemspec'
-    - 'spec/puppet-lint/plugins/check_strict_indent_spec.rb'
-
 # Offense count: 4
 Style/MultilineBlockChain:
   Exclude:

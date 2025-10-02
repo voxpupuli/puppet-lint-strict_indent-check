@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |spec|
   spec.name = 'puppet-lint-strict_indent-check'
   spec.version     = '5.0.0'

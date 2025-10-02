@@ -1,7 +1,4 @@
 require 'spec_helper'
-# rubocop:disable Lint/RedundantRequireStatement
-require 'pp'
-# rubocop:enable Lint/RedundantRequireStatement
 
 describe 'strict_indent' do
   before do

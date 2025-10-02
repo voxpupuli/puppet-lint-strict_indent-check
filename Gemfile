@@ -14,5 +14,5 @@ group :development do
   gem 'rspec', '~> 3.12'
   gem 'rspec-collection_matchers', '~> 1.2'
   gem 'rspec-its', '>= 1.3', '< 3'
-  gem 'voxpupuli-rubocop', '~> 4.2.0'
+  gem 'voxpupuli-rubocop', '~> 5.0.0'
 end
